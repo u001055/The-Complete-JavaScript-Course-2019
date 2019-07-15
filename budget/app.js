@@ -208,11 +208,7 @@ var UIController = (() => {
     };
     
     
-    var nodeListForEach = (list, callback) => {
-        for (var i = 0; i < list.length; i++) {
-            callback(list[i], i);
-        }
-    };
+    var nodeListForEach = (list, callback) => list.forEach((el,i) => callback(el, i));
     
     
     return {
@@ -225,7 +221,7 @@ var UIController = (() => {
         },
         
         
-        addListItem: function(obj, type) {
+        addListItem: (obj, type) => {
             var html, newHtml, element;
             // Create HTML string with placeholder text
             
@@ -249,15 +245,13 @@ var UIController = (() => {
         },
         
         
-        deleteListItem: function(selectorID) {
-            
+        deleteListItem: selectorID => {            
             var el = document.getElementById(selectorID);
-            el.parentNode.removeChild(el);
-            
+            el.parentNode.removeChild(el);            
         },
         
         
-        clearFields: function() {
+        clearFields: () => {
             var fields, fieldsArr;
             
             fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
@@ -282,8 +276,7 @@ var UIController = (() => {
                 document.querySelector(DOMstrings.percentageLabel).textContent = obj.percentage + '%';
             } else {
                 document.querySelector(DOMstrings.percentageLabel).textContent = '---';
-            }
-            
+            }            
         },
         
         
@@ -324,9 +317,7 @@ var UIController = (() => {
                 DOMstrings.inputDescription + ',' +
                 DOMstrings.inputValue);
             
-            nodeListForEach(fields, function(cur) {
-               cur.classList.toggle('red-focus'); 
-            });
+            nodeListForEach(fields, cur => cur.classList.toggle('red-focus'));
             
             document.querySelector(DOMstrings.inputBtn).classList.toggle('red');
             
@@ -342,14 +333,14 @@ var UIController = (() => {
 
 
 // GLOBAL APP CONTROLLER
-var controller = (function(budgetCtrl, UICtrl) {
+var controller = ((budgetCtrl, UICtrl) => {
     
-    var setupEventListeners = function() {
+    var setupEventListeners = () => {
         var DOM = UICtrl.getDOMstrings();
         
         document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
 
-        document.addEventListener('keypress', function(event) {
+        document.addEventListener('keypress', event => {
             if (event.keyCode === 13 || event.which === 13) {
                 ctrlAddItem();
             }
@@ -361,7 +352,7 @@ var controller = (function(budgetCtrl, UICtrl) {
     };
     
     
-    var updateBudget = function() {
+    var updateBudget = () => {
         
         // 1. Calculate the budget
         budgetCtrl.calculateBudget();
@@ -374,7 +365,7 @@ var controller = (function(budgetCtrl, UICtrl) {
     };
     
     
-    var updatePercentages = function() {
+    var updatePercentages = () => {
         
         // 1. Calculate percentages
         budgetCtrl.calculatePercentages();
@@ -387,7 +378,7 @@ var controller = (function(budgetCtrl, UICtrl) {
     };
     
     
-    var ctrlAddItem = function() {
+    var ctrlAddItem = () => {
         var input, newItem;
         
         // 1. Get the field input data
